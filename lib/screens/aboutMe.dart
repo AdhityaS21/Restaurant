@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:restaurant/screens/favoritesScreen.dart';
 import 'package:restaurant/screens/homeScreen.dart';
 import 'package:restaurant/screens/settingsScreen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
 
 class AboutMeScreen extends StatefulWidget {
   AboutMeScreen({Key key}) : super(key: key);
@@ -11,6 +13,7 @@ class AboutMeScreen extends StatefulWidget {
 }
 
 class _AboutMeScreenState extends State<AboutMeScreen> {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,29 +27,31 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverList(
-            delegate: SliverChildListDelegate([
-              SizedBox(height: 180),
-              Column(
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.only(top: 50.0, left: 18.0, right: 18.0),
+              child: Column(
                 children: [
+                  SizedBox(height: 150),
                   Text(
-                    "ME",
+                    "Agung S",
                     style: TextStyle(
+                      fontSize: 25,
                       fontWeight: FontWeight.bold,
-                      fontSize: 25.0
                     ),
                   ),
                   SizedBox(height: 15),
                   Text(
-                    "BANDUNG",
+                    "Bandung",
                     style: TextStyle(
+                      fontSize: 15,
                       fontWeight: FontWeight.bold,
-                      fontSize: 15.0
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 15),
                   Container(
                     padding: EdgeInsets.only(left: 20.0, right: 20.0),
                     child: FlatButton(
@@ -77,11 +82,10 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                           Icon(Icons.navigate_next, color: Colors.grey, size: 40),
                         ],
                       ),
-                      onPressed: (){
-                      },
+                      onPressed: (){},
                     ),
                   ),
-                  SizedBox(height: 10.0),
+                  SizedBox(height: 15),
                   Container(
                     alignment: Alignment.topLeft,
                     padding: EdgeInsets.only(left: 18.0),
@@ -93,19 +97,81 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10.0),
-                  Text(
-                    "belum ada favorite",
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                    ),
+                  SizedBox(height: 15),
+                  StreamBuilder<QuerySnapshot>(
+                    stream: firestore.collection("Restaurant").where("restFav", isEqualTo: true).snapshots(),
+                    builder: (_, snapshot){
+                      if(snapshot.hasData){
+                        return GridView.count(
+                          childAspectRatio: 3/5,
+                          crossAxisCount: 2,
+                          children: List.generate(snapshot.data.docs.length, (index){
+                            DocumentSnapshot document = snapshot.data.docs[index];
+                            Map<String, dynamic> task = document.data();
+                            return GestureDetector(
+                              child: Container(
+                                child: Card(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Image.asset(task['restImg']),
+                                      SizedBox(height: 10),
+                                      Container(
+                                        padding: EdgeInsets.only(left: 8, right: 8),
+                                        child: Text(
+                                          task['restLoc'],
+                                          style: TextStyle(
+                                            color: Colors.blue,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      Container(
+                                        padding: EdgeInsets.only(left: 8, right: 8),
+                                        child: Text(
+                                          task['restName'],
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      Container(
+                                        padding: EdgeInsets.only(left: 8, right: 8),
+                                        child: Text(
+                                          task['restDesc'],
+                                          maxLines: 6,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: Colors.grey[600],
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              onTap: (){},
+                            );
+                          }),
+                        );
+                      }
+                      else{
+                        return Container(
+                          child: Text("belum ada favorite"),
+                        );
+                      }
+                    },
                   ),
                 ],
               ),
-            ],),
             ),
-          SliverFillRemaining(
-            hasScrollBody: false,
+          ),
+          Expanded(
             child: Container(
               alignment: Alignment.bottomCenter,
               margin: EdgeInsets.only(bottom: 20.0),
@@ -132,24 +198,24 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                       TextButton(
                         child: Icon(Icons.restaurant, color: Colors.grey, size: 30),
                         onPressed: (){
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                          Get.off(HomeScreen(), transition: Transition.noTransition);
                         },
                       ),
                       TextButton(
                         child: Icon(Icons.favorite, color: Colors.grey, size: 30),
                         onPressed: (){
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FavoritesScreen()));
+                          Get.off(FavoritesScreen(), transition: Transition.noTransition);
                         },
                       ),
                       TextButton(
                         child: Icon(Icons.account_circle, color: Colors.blue, size: 30),
-                        onPressed: (){                    
+                        onPressed: (){
                         },
                       ),
                       TextButton(
                         child: Icon(Icons.settings, color: Colors.grey, size: 30),
                         onPressed: (){
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SettingsScreen()));
+                          Get.off(SettingsScreen(), transition: Transition.noTransition);
                         },
                       ),
                     ],

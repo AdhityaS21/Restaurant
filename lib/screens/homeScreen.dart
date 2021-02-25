@@ -1,15 +1,16 @@
-import 'package:restaurant/models/modelRestaurants.dart';
 import 'package:restaurant/screens/aboutMe.dart';
 import 'package:restaurant/screens/detailRestaurantScreen.dart';
 import 'package:restaurant/screens/settingsScreen.dart';
 import 'favoritesScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -58,59 +59,82 @@ class HomeScreen extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              //color: Colors.grey,
               margin: EdgeInsets.only(top: 50.0, left: 18.0, right: 18.0),
-              child: GridView.count(
-                childAspectRatio: 3/5,
-                crossAxisCount: 2,
-                children: List.generate(restaurants.length,(index){
-                  return GestureDetector(
-                    child: Container(
-                      child: Card(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Image.asset("assets/restaurant1.jpg"),
-                            SizedBox(height: 10),
-                            Text(
-                              restaurants[index].location,
-                              maxLines: 6,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold,
-                              ),
+              child: StreamBuilder<QuerySnapshot>(
+                stream: firestore.collection("Restaurant").snapshots(),
+                builder: (_, snapshot){
+                  if(snapshot.hasData){
+                    return GridView.count(
+                    childAspectRatio: 3/5,
+                    crossAxisCount: 2,
+                    children: List.generate(snapshot.data.docs.length, (index){
+                      DocumentSnapshot document = snapshot.data.docs[index];
+                      Map<String, dynamic> task = document.data();
+                      return GestureDetector(
+                        child: Container(
+                          child: Card(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Image.asset(task['restImg']),
+                                SizedBox(height: 10),
+                                Container(
+                                  padding: EdgeInsets.only(left: 8, right: 8),
+                                  child: Text(
+                                    task['restLoc'],
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                Container(
+                                  padding: EdgeInsets.only(left: 8, right: 8),
+                                  child: Text(
+                                    task['restName'],
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                Container(
+                                  padding: EdgeInsets.only(left: 8, right: 8),
+                                  child: Text(
+                                    task['restDesc'],
+                                    maxLines: 6,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            SizedBox(height: 10),
-                            Text(
-                              restaurants[index].restName,
-                              maxLines: 6,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              restaurants[index].restDesc,
-                              maxLines: 6,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailRestaurantScreen(),));
-                    },
+                        onTap: (){
+                          Get.to(
+                            DetailRestaurantScreen(
+                              restName: task['restName'],
+                              restLoc: task['restLoc'],
+                              restDesc: task['restDesc'],
+                              id: document.id,
+                            ),
+                            transition: Transition.zoom);
+                        },
+                      );
+                    }),
                   );
-                }),
+                  }
+                  else{
+                    return CircularProgressIndicator();
+                  }
+                },
               ),
             ),
           ),
@@ -146,19 +170,19 @@ class HomeScreen extends StatelessWidget {
                       TextButton(
                         child: Icon(Icons.favorite, color: Colors.grey, size: 30),
                         onPressed: (){
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FavoritesScreen()));
+                          Get.off(FavoritesScreen(), transition: Transition.noTransition);
                         },
                       ),
                       TextButton(
                         child: Icon(Icons.account_circle, color: Colors.grey, size: 30),
                         onPressed: (){
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AboutMeScreen()));
+                          Get.off(AboutMeScreen(), transition: Transition.noTransition);
                         },
                       ),
                       TextButton(
                         child: Icon(Icons.settings, color: Colors.grey, size: 30),
                         onPressed: (){
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SettingsScreen()));
+                          Get.off(SettingsScreen(), transition: Transition.noTransition);
                         },
                       ),
                     ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant/screens/homeScreen.dart';
-
+import 'package:get/get.dart';
 import 'aboutMe.dart';
 import 'favoritesScreen.dart';
 
@@ -145,19 +145,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       TextButton(
                         child: Icon(Icons.restaurant, color: Colors.grey, size: 30),
                         onPressed: (){
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                          Get.off(HomeScreen(), transition: Transition.noTransition);
                         },
                       ),
                       TextButton(
                         child: Icon(Icons.favorite, color: Colors.grey, size: 30),
                         onPressed: (){
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FavoritesScreen()));
+                          Get.off(FavoritesScreen(), transition: Transition.noTransition);
                         },
                       ),
                       TextButton(
                         child: Icon(Icons.account_circle, color: Colors.grey, size: 30),
                         onPressed: (){
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AboutMeScreen()));
+                          Get.off(AboutMeScreen(),transition: Transition.noTransition);
                         },
                       ),
                       TextButton(
