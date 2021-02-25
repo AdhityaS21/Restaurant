@@ -104,7 +104,7 @@ class ReviewsScreen extends StatelessWidget {
 
     showModalBottomSheet(
         context: context,
-        builder: (BuildContext context) {
+        builder: (_) {
           return Container(
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
             height: 300,

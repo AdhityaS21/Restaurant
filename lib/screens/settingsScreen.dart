@@ -12,9 +12,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  // Pendekralasian variable dengan type yang sama bisa di persiingkat
-  bool isSwitched = false;
-  bool isSwitched2 = false;
+  bool isSwitched = false, isSwitched2 = false;
 
   @override
   Widget build(BuildContext context) {

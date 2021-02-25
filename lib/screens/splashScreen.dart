@@ -41,7 +41,6 @@ class _SplashScreenState extends State<SplashScreen> {
             CircularProgressIndicator(
               backgroundColor: Colors.white,
               // Strokena gede teuing uyy:v
-              strokeWidth: 8,
             ),
           ],
         ),
