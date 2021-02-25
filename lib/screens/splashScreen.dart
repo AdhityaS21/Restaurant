@@ -10,17 +10,19 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  void initState(){
+  void initState() {
     super.initState();
     startSplashScreen();
   }
 
-  startSplashScreen() async{
-    var duration  = const Duration(seconds: 3);
-    return Timer(duration, (){
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+  startSplashScreen() async {
+    var duration = const Duration(seconds: 3);
+    return Timer(duration, () {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
             SizedBox(height: 300.0),
             CircularProgressIndicator(
               backgroundColor: Colors.white,
+              // Strokena gede teuing uyy:v
               strokeWidth: 8,
             ),
           ],
