@@ -11,7 +11,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  void initState(){
+  void initState() {
     super.initState();
     startSplashScreen();
   }
@@ -22,6 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Get.off(HomeScreen());
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,6 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
             SizedBox(height: 300.0),
             CircularProgressIndicator(
               backgroundColor: Colors.white,
+              // Strokena gede teuing uyy:v
               strokeWidth: 8,
             ),
           ],
