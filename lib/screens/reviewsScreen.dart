@@ -35,9 +35,16 @@ class ReviewsScreen extends StatelessWidget {
         stream: firestore
             .collection('Reviews')
             .where('restKey', isEqualTo: id)
+            .orderBy('date', descending: true)
             .snapshots(),
         builder: (_, snapshot) {
           if (snapshot.hasData) {
+            if(snapshot.data.docs.isEmpty){
+              return Container(
+                alignment: Alignment.center,
+                child: Text("belum ada review"),
+              );
+            }
             return ListView.builder(
               itemCount: snapshot.data.docs.length,
               itemBuilder: (_, index) {
@@ -88,7 +95,7 @@ class ReviewsScreen extends StatelessWidget {
           } else {
             return Container(
               alignment: Alignment.center,
-              child: Text("belum ada review"),
+              child: Text("Loading ..."),
             );
           }
         },
@@ -99,8 +106,7 @@ class ReviewsScreen extends StatelessWidget {
   void _settingModalBottomSheet(context) {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-    TextEditingController nameController = new TextEditingController();
-    TextEditingController reviewController = new TextEditingController();
+    TextEditingController nameController = new TextEditingController(), reviewController = new TextEditingController();
 
     showModalBottomSheet(
         context: context,
@@ -148,7 +154,7 @@ class ReviewsScreen extends StatelessWidget {
                           nameController.text = '';
                           reviewController.text = '';
 
-                          Navigator.pop(context);
+                          Navigator.pop(_);
                         },
                         textColor: Colors.white,
                         padding: const EdgeInsets.all(0.0),

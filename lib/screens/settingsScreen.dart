@@ -28,96 +28,95 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Expanded(
-            child: Container(
-              padding: EdgeInsets.only(left: 20.0, right: 20.0),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.notifications_active, color: Colors.grey),
-                      SizedBox(width: 16.0),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "RestaurantNotification",
-                              style: TextStyle(
-                                fontSize: 17,
-                              ),
+          Container(
+            padding: EdgeInsets.only(left: 20.0, right: 20.0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.notifications_active, color: Colors.grey),
+                    SizedBox(width: 16.0),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "RestaurantNotification",
+                            style: TextStyle(
+                              fontSize: 17,
                             ),
-                            SizedBox(height: 6),
-                            Text(
-                              "Notification every 11 AM",
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey[600],
-                              ),
+                          ),
+                          SizedBox(height: 6),
+                          Text(
+                            "Notification every 11 AM",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[600],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                      Switch(
-                        value: isSwitched,
-                        onChanged: (value) {
-                          setState(() {
-                            isSwitched = value;
-                            print(isSwitched);
-                          });
-                        },
-                        activeTrackColor: Colors.lightBlueAccent,
-                        activeColor: Colors.blue,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10.0),
-                  Row(
-                    children: [
-                      Icon(Icons.nights_stay, color: Colors.grey),
-                      SizedBox(width: 16.0),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Night Mode",
-                              style: TextStyle(
-                                fontSize: 17,
-                              ),
+                    ),
+                    Switch(
+                      value: isSwitched,
+                      onChanged: (value) {
+                        setState(() {
+                          isSwitched = value;
+                          print(isSwitched);
+                        });
+                      },
+                      activeTrackColor: Colors.lightBlueAccent,
+                      activeColor: Colors.blue,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10.0),
+                Row(
+                  children: [
+                    Icon(Icons.nights_stay, color: Colors.grey),
+                    SizedBox(width: 16.0),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Night Mode",
+                            style: TextStyle(
+                              fontSize: 17,
                             ),
-                            SizedBox(height: 6),
-                            Text(
-                              "Change to Night Mode",
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey[600],
-                              ),
+                          ),
+                          SizedBox(height: 6),
+                          Text(
+                            "Change to Night Mode",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[600],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                      Switch(
-                        value: isSwitched2,
-                        onChanged: (value) {
-                          setState(() {
-                            isSwitched2 = value;
-                            print(isSwitched2);
-                          });
-                        },
-                        activeTrackColor: Colors.lightBlueAccent,
-                        activeColor: Colors.blue,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                    Switch(
+                      value: isSwitched2,
+                      onChanged: (value) {
+                        setState(() {
+                          isSwitched2 = value;
+                          print(isSwitched2);
+                        });
+                      },
+                      activeTrackColor: Colors.lightBlueAccent,
+                      activeColor: Colors.blue,
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
-          Expanded(
+          Positioned(
+            bottom: 5,
             child: Container(
+              width: 395,
               alignment: Alignment.bottomCenter,
-              margin: EdgeInsets.only(bottom: 20.0),
               child: Padding(
                 padding: EdgeInsets.all(30),
                 child: Container(
