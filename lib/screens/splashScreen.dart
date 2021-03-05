@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'homeScreen.dart';
+import 'package:restaurant/screens/navigationBarScreen.dart';
 import 'package:get/get.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   startSplashScreen() async{
     var duration  = const Duration(seconds: 3);
     return Timer(duration, (){
-      Get.off(HomeScreen());
+      Get.off(NavigationBarScreen());
     });
   }
 

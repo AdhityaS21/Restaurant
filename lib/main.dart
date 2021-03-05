@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant/screens/homeScreen.dart';
+import 'package:restaurant/navigation.dart';
+import 'package:restaurant/screens/navigationBarScreen.dart';
 import 'package:restaurant/screens/splashScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(Restaurant());
@@ -18,7 +20,10 @@ class Restaurant extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Restaurant',
-      home: HomeScreen(),
+      home: ChangeNotifierProvider<Navigation>(
+          create: (context) => Navigation(),
+          child: NavigationBarScreen(),
+      ),
       // initialRoute: '/',
       // routes: {
       //   '/': (context) => HomeScreen(),
